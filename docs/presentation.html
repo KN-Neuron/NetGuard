@@ -23,10 +23,11 @@
     padding:64px 80px 96px;
     display:flex; flex-direction:column; justify-content:center;
     page-break-after:always; break-after:page;
-    background:
-      radial-gradient(1000px 480px at 88% -18%, rgba(46,230,168,.07) 0%, rgba(46,230,168,0) 60%),
-      radial-gradient(900px 520px at -10% 118%, rgba(106,165,255,.06) 0%, rgba(106,165,255,0) 58%),
-      linear-gradient(180deg,#081020 0%,#070c18 100%);
+    /* Pre-baked background (docs/bg.png): CSS gradients export as soft-masked
+       PDF shadings that viewers rasterize on every render, which made the PDF
+       extremely slow to page through. A plain image is instant everywhere. */
+    background:#070c18 url("bg.png") no-repeat;
+    background-size:100% 100%;
   }
   .slide:last-child{page-break-after:auto; break-after:auto;}
 
@@ -40,55 +41,63 @@
   .kicker{display:flex;align-items:center;gap:14px;
     font:700 12px var(--mono); letter-spacing:.3em; text-transform:uppercase; color:var(--accent);}
   .kicker::before{content:"";width:28px;height:1px;background:var(--accent);opacity:.8;}
-  h1{margin:22px 0 0;font-size:78px;line-height:1.02;font-weight:800;letter-spacing:-2.2px;}
+  h1{margin:22px 0 0;font-size:76px;line-height:1.03;font-weight:800;letter-spacing:-2.2px;}
   h2{margin:20px 0 0;font-size:45px;line-height:1.08;font-weight:750;letter-spacing:-1.1px;max-width:1020px;}
-  h2 em,h1 em{font-style:normal;color:var(--accent);}
-  .lead{margin:20px 0 0;color:var(--muted);font-size:20px;line-height:1.55;max-width:860px;}
+  h2 em,h1 em,.display em{font-style:normal;color:var(--accent);}
+  .lead{margin:20px 0 0;color:var(--muted);font-size:20px;line-height:1.55;max-width:820px;}
   .head{margin-bottom:52px;}
-  .head:only-child{margin-bottom:0;}
+  .display{margin:0;font-size:52px;line-height:1.1;font-weight:750;letter-spacing:-1.4px;}
 
-  .grad{background:linear-gradient(95deg,var(--accent) 0%,var(--info) 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .vstrip{display:flex;gap:8px;margin-top:46px;}
+  .vstrip i{display:block;width:66px;height:6px;border-radius:2px;}
+  .vstrip .a{background:var(--unsafe);} .vstrip .b{background:var(--caution);} .vstrip .c{background:var(--safe);}
 
   /* ---------- structures ---------- */
-  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;}
-  .item{border-top:1px solid var(--line);padding-top:18px;}
-  .item .num{font:700 12.5px var(--mono);letter-spacing:.26em;color:var(--accent);}
-  .item h3{margin:12px 0 8px;font-size:23px;font-weight:700;letter-spacing:-.3px;}
-  .item p{margin:0;color:var(--muted);font-size:16px;line-height:1.5;}
-  .item p b{color:var(--text);font-weight:600;}
+  .split{display:grid;grid-template-columns:1.05fr 1fr;gap:80px;align-items:start;}
+  .factstack .fact{border-top:1px solid var(--line);padding:18px 0 20px;}
+  .factstack .fact:last-child{border-bottom:1px solid var(--line);}
+  .factstack .n{font-size:31px;font-weight:800;letter-spacing:-.8px;line-height:1;}
+  .factstack .l{margin-top:9px;color:var(--muted);font-size:15.5px;line-height:1.5;}
 
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;}
-  .stat{border-top:1px solid var(--line);padding-top:18px;}
-  .stat .n{font-size:46px;font-weight:800;letter-spacing:-1.5px;line-height:1;}
-  .stat .n small{display:block;margin-top:10px;font-size:15px;font-weight:600;letter-spacing:0;color:var(--text);}
-  .stat .l{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.5;}
-  .stat.hot .n{color:var(--accent);}
+  .rows{max-width:1060px;}
+  .rows .row{display:grid;grid-template-columns:170px 1fr;gap:36px;align-items:start;
+    border-top:1px solid var(--hair);padding:24px 0;}
+  .rows .row:last-child{border-bottom:1px solid var(--hair);}
+  .rows .tag{font:700 11.5px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--faint);padding-top:7px;}
+  .rows .s{font-size:22px;line-height:1.45;font-weight:600;letter-spacing:-.2px;}
+  .rows .s span{color:var(--muted);font-weight:400;}
+
+  .journey{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:56px;}
+  .journey::before{content:"";position:absolute;top:5px;left:2px;right:2px;height:1px;background:var(--line);}
+  .stop{position:relative;padding-top:30px;}
+  .stop::before{content:"";position:absolute;top:0;left:0;width:11px;height:11px;background:var(--accent);}
+  .stop .num{font:700 12.5px var(--mono);letter-spacing:.26em;color:var(--accent);}
+  .stop h3{margin:12px 0 8px;font-size:24px;font-weight:700;letter-spacing:-.3px;}
+  .stop p{margin:0;color:var(--muted);font-size:16px;line-height:1.5;}
+  .stop p b{color:var(--text);font-weight:600;}
 
   .focus{margin-top:52px;font-size:27px;font-weight:700;letter-spacing:-.4px;}
   .focus span{color:var(--accent);}
-  .mono-line{margin-top:36px;font:600 14px var(--mono);letter-spacing:.04em;color:var(--muted);}
-  .mono-line b{color:var(--accent);font-weight:600;}
+  .note{margin-top:44px;border-top:1px solid var(--hair);padding-top:20px;
+    color:var(--muted);font-size:16.5px;line-height:1.6;max-width:1000px;}
+  .note b{color:var(--text);font-weight:600;}
 
   /* flow */
   .flow{display:flex;align-items:stretch;gap:14px;}
-  .node{flex:1;border:1px solid var(--line);border-radius:10px;padding:18px 16px;background:rgba(255,255,255,.015);}
-  .node .t{font-size:16px;font-weight:700;}
-  .node .d{margin-top:7px;color:var(--muted);font:400 12.5px var(--mono);line-height:1.45;}
+  .node{flex:1;border:1px solid var(--line);border-radius:10px;padding:20px 18px;background:rgba(255,255,255,.015);}
+  .node .t{font-size:17.5px;font-weight:700;}
+  .node .d{margin-top:8px;color:var(--muted);font-size:13.5px;line-height:1.45;}
   .arrow{display:flex;align-items:center;color:var(--accent);font-size:20px;font-weight:700;}
-  .probes{margin-top:40px;border-top:1px solid var(--hair);padding-top:18px;
-    font:500 13.5px var(--mono);color:var(--muted);line-height:1.6;}
-  .probes b{color:var(--text);font-weight:600;}
 
   /* checks */
   .checks{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;}
-  .check{border-top:1px solid var(--hair);padding:12px 0;}
+  .check{border-top:1px solid var(--hair);padding:13px 0;}
   .check .top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;}
-  .check .name{font:600 15px var(--mono);color:var(--text);}
+  .check .name{font-size:17px;font-weight:650;}
   .sev{font:700 10.5px var(--mono);letter-spacing:.22em;text-transform:uppercase;}
   .sev.crit{color:var(--unsafe);} .sev.high{color:var(--caution);}
   .sev.med{color:var(--info);} .sev.low{color:var(--muted);}
-  .check .desc{margin-top:5px;color:var(--muted);font-size:14.5px;line-height:1.4;}
+  .check .desc{margin-top:5px;color:var(--muted);font-size:15px;line-height:1.4;}
 
   /* scoring */
   .bar{position:relative;height:34px;border-radius:8px;margin-top:8px;
@@ -96,22 +105,24 @@
   .bar .tick{position:absolute;top:-10px;bottom:-10px;width:2px;background:#fff;opacity:.85;}
   .barlbl{display:flex;justify-content:space-between;margin-top:16px;
     font:600 12px var(--mono);letter-spacing:.14em;color:var(--faint);text-transform:uppercase;}
-  .triple{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:48px;}
 
-  /* notifications */
-  .notif{border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:10px;
-    padding:16px 18px;background:var(--panel);}
-  .notif.bad{border-left-color:var(--unsafe);} .notif.ok{border-left-color:var(--safe);}
-  .notif .app{font:600 10.5px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--faint);}
-  .notif .ti{margin-top:7px;font-size:16px;font-weight:700;}
-  .notif .bo{margin-top:8px;color:var(--muted);font-size:14px;line-height:1.55;white-space:pre-line;}
+  /* storyboard */
+  .board{display:grid;gap:26px;}
+  .stack{display:grid;gap:18px;align-content:start;}
+  .frame .step{font:700 11px var(--mono);letter-spacing:.24em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;}
+  .frame .card{border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--panel);}
+  .frame .card .big{font-size:19px;font-weight:700;letter-spacing:-.2px;}
+  .frame .card .sub{margin-top:7px;color:var(--muted);font-size:14px;}
+  .shot{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;}
+  figure{margin:0;}
+  figcaption{margin-top:10px;color:var(--muted);font-size:14px;}
 
   table{width:100%;border-collapse:collapse;font-size:16px;}
   th{font:700 11px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--faint);
     text-align:start;padding:0 0 12px;font-weight:700;}
-  td{border-top:1px solid var(--hair);padding:13px 24px 13px 0;vertical-align:top;color:var(--muted);}
+  td{border-top:1px solid var(--hair);padding:14px 24px 14px 0;vertical-align:top;color:var(--muted);}
   td + td, th + th{padding-left:12px;}
-  td:first-child{font:600 14.5px var(--mono);color:var(--text);white-space:nowrap;}
   td b{color:var(--text);font-weight:600;}
   .v{font:700 13px var(--mono);letter-spacing:.12em;}
   .v.safe{color:var(--safe);} .v.caution{color:var(--caution);} .v.unsafe{color:var(--unsafe);}
@@ -128,28 +139,31 @@
 
 <!-- 1 · TITLE -->
 <section class="slide">
-  <div style="max-width:1080px">
+  <div style="max-width:1040px">
     <div class="kicker">Defence · Security &amp; resilience</div>
     <h1>Know if the Wi-Fi is safe<br><em>before you trust it.</em></h1>
     <p class="lead">NetGuard checks the security posture of every network you join, then tells you in plain language whether it can be trusted.</p>
-    <div class="mono-line">linux desktop utility &nbsp;·&nbsp; python, <b>zero dependencies</b> &nbsp;·&nbsp; 10 posture checks &nbsp;·&nbsp; notify-send</div>
+    <div class="vstrip"><i class="a"></i><i class="b"></i><i class="c"></i></div>
   </div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>01 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>01 / 12</span></div>
 </section>
 
 <!-- 2 · PROBLEM -->
 <section class="slide">
-  <div class="head">
-    <div class="kicker">The problem</div>
-    <h2>Public Wi-Fi asks for trust it <em>never earned</em></h2>
+  <div class="kicker">The problem</div>
+  <div class="split" style="margin-top:34px">
+    <div>
+      <p class="display">Public Wi-Fi asks for trust it <em>never earned.</em></p>
+      <p class="lead" style="margin-top:26px">The network that looks ordinary can be the one reading your traffic.</p>
+    </div>
+    <div class="factstack">
+      <div class="fact"><div class="n">1 click</div><div class="l">to join a network that is not what it claims to be.</div></div>
+      <div class="fact"><div class="n">0 signals</div><div class="l">that your traffic is being read or rewritten.</div></div>
+      <div class="fact"><div class="n">Everyone</div><div class="l">remote workers, small teams, travellers. No security team required.</div></div>
+    </div>
   </div>
-  <div class="stats">
-    <div class="stat hot"><div class="n">1 click</div><small>to join an untrusted network</small><div class="l">and the same click can hand over credentials to an attacker.</div></div>
-    <div class="stat"><div class="n">0 signals</div><small>that traffic is manipulated</small><div class="l">A padlock means the link is encrypted, not that the network is honest.</div></div>
-    <div class="stat"><div class="n">Most exposed</div><small>have the least support</small><div class="l">Remote workers, small teams, journalists and travellers.</div></div>
-  </div>
-  <div class="focus">NetGuard closes that gap at the exact moment of risk: <span>the network change.</span></div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>02 / 13</span></div>
+  <div class="focus">NetGuard acts at the exact moment of risk: <span>the network change.</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>02 / 12</span></div>
 </section>
 
 <!-- 3 · GAP -->
@@ -158,13 +172,13 @@
     <div class="kicker">Why the usual answers fail</div>
     <h2>Existing help arrives too late, <em>or says too little</em></h2>
   </div>
-  <div class="tri">
-    <div class="item"><div class="num">TOOLS</div><h3>Enterprise agents</h3><p>Built for managed fleets. Too heavy for one laptop on hotel Wi-Fi.</p></div>
-    <div class="item"><div class="num">ADVICE</div><h3>"Just use a VPN"</h3><p>Sound, but it never tells you whether <b>this</b> network is hostile, or why.</p></div>
-    <div class="item"><div class="num">THE OS</div><h3>A padlock icon</h3><p>Shows link encryption only. Says nothing about DNS, the gateway or interception.</p></div>
+  <div class="rows">
+    <div class="row"><div class="tag">Enterprise tools</div><div class="s">Built for managed fleets, <span>too heavy for one laptop on hotel Wi-Fi.</span></div></div>
+    <div class="row"><div class="tag">Standard advice</div><div class="s">"Just use a VPN", <span>which never tells you whether this network is hostile.</span></div></div>
+    <div class="row"><div class="tag">The operating system</div><div class="s">A padlock icon, <span>which says nothing about who else is on the network.</span></div></div>
   </div>
   <div class="focus">The insight: make the <span>network change</span> the trigger, and turn ten checks into one verdict.</div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>03 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>03 / 12</span></div>
 </section>
 
 <!-- 4 · IDEA -->
@@ -173,125 +187,130 @@
     <div class="kicker">Idea &amp; innovation</div>
     <h2>Check the network <em>at the moment you join it</em></h2>
   </div>
-  <div class="tri">
-    <div class="item"><div class="num">01 · DETECT</div><h3>Watch the network</h3><p>Streams NetworkManager events for instant reaction, with a state-fingerprint poller as a fallback.</p></div>
-    <div class="item"><div class="num">02 · ASSESS</div><h3>Run 10 posture checks</h3><p>Encryption, TLS interception, DNS, gateway, evil twin, portal, proxy, exposure, MAC, reachability.</p></div>
-    <div class="item"><div class="num">03 · INFORM</div><h3>One clear verdict</h3><p>SAFE, CAUTION or UNSAFE, with the reasons and one concrete action, on the desktop.</p></div>
+  <div class="journey">
+    <div class="stop"><div class="num">01 · DETECT</div><h3>Watch the network</h3><p>The moment you connect, <b>NetGuard notices</b>, and starts looking.</p></div>
+    <div class="stop"><div class="num">02 · ASSESS</div><h3>Run ten checks</h3><p>Is the link protected? Who runs it? <b>Is anyone in the middle?</b></p></div>
+    <div class="stop"><div class="num">03 · INFORM</div><h3>Give one verdict</h3><p>Safe, caution or unsafe, <b>with one clear action</b>, right on the desktop.</p></div>
   </div>
-  <div class="focus">Proactive by trigger, <span>explainable by design</span>, reproducible without hardware.</div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>04 / 13</span></div>
+  <div class="focus">Proactive by trigger, <span>explainable by design</span>, reproducible without special hardware.</div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>04 / 12</span></div>
 </section>
 
-<!-- 5 · ARCHITECTURE -->
+<!-- 5 · HOW IT WORKS -->
 <section class="slide">
   <div class="head">
     <div class="kicker">How it works</div>
     <h2>A small, transparent <em>pipeline</em></h2>
   </div>
   <div class="flow">
-    <div class="node"><div class="t">Network change</div><div class="d">new link, gateway or DNS</div></div>
+    <div class="node"><div class="t">You connect</div><div class="d">a new network appears</div></div>
     <div class="arrow">→</div>
-    <div class="node"><div class="t">State collector</div><div class="d">nmcli · ip<br>iw · resolvectl</div></div>
+    <div class="node"><div class="t">Facts are gathered</div><div class="d">what kind of network, and who runs it</div></div>
     <div class="arrow">→</div>
-    <div class="node"><div class="t">Check engine</div><div class="d">10 posture checks<br>safe, targeted probes</div></div>
+    <div class="node"><div class="t">Ten checks run</div><div class="d">protection, identity, eavesdropping</div></div>
     <div class="arrow">→</div>
-    <div class="node"><div class="t">Verdict engine</div><div class="d">weighted score<br>hard severity caps</div></div>
+    <div class="node"><div class="t">Findings are weighed</div><div class="d">one score out of 100</div></div>
     <div class="arrow">→</div>
-    <div class="node"><div class="t">Inform</div><div class="d">notify-send<br>text · json · html</div></div>
+    <div class="node"><div class="t">You are told</div><div class="d">a verdict and one clear action</div></div>
   </div>
-  <div class="probes">probes: DNS lookups · DNS-over-HTTPS comparison · TLS handshakes to well-known hosts · captive-portal request · port probe on <b>your own gateway only</b>. No capture, nothing stored.</div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>05 / 13</span></div>
+  <div class="note">Every check inspects <b>the network, not your files</b>: how the connection is protected, whether the router is who it claims to be, and whether anyone is quietly reading your traffic. <b>Nothing is captured, recorded or sent anywhere.</b></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>05 / 12</span></div>
 </section>
 
 <!-- 6 · CHECKS -->
 <section class="slide">
   <div class="head">
     <div class="kicker">The posture checks</div>
-    <h2>Ten checks, mapped to <em>real attacks</em></h2>
+    <h2>Ten questions, asked <em>every time you connect</em></h2>
   </div>
   <div class="checks">
-    <div class="check"><div class="top"><span class="name">wifi_encryption</span><span class="sev high">high</span></div><div class="desc">Open, WEP, WPA1 or TKIP links.</div></div>
-    <div class="check"><div class="top"><span class="name">captive_portal</span><span class="sev med">medium</span></div><div class="desc">Portals that intercept and redirect traffic.</div></div>
-    <div class="check"><div class="top"><span class="name">tls_interception</span><span class="sev crit">critical</span></div><div class="desc">MITM via untrusted or private-CA certificates.</div></div>
-    <div class="check"><div class="top"><span class="name">proxy_injection</span><span class="sev med">medium</span></div><div class="desc">Transparent proxies rewriting plain HTTP.</div></div>
-    <div class="check"><div class="top"><span class="name">dns_integrity</span><span class="sev high">high</span></div><div class="desc">Hijacked answers vs. a trusted DoH resolver.</div></div>
-    <div class="check"><div class="top"><span class="name">router_exposure</span><span class="sev med">medium</span></div><div class="desc">Telnet, UPnP and admin ports on the gateway.</div></div>
-    <div class="check"><div class="top"><span class="name">arp_gateway</span><span class="sev high">high</span></div><div class="desc">Spoofed ARP entries and rogue gateways.</div></div>
-    <div class="check"><div class="top"><span class="name">mac_randomization</span><span class="sev low">low</span></div><div class="desc">Is your hardware address randomised?</div></div>
-    <div class="check"><div class="top"><span class="name">evil_twin</span><span class="sev high">high</span></div><div class="desc">Same SSID advertised with different security.</div></div>
-    <div class="check"><div class="top"><span class="name">reachability</span><span class="sev low">info</span></div><div class="desc">Context: is there egress at all?</div></div>
+    <div class="check"><div class="top"><span class="name">Wireless encryption</span><span class="sev high">high</span></div><div class="desc">The link is open, or protected by long-broken security.</div></div>
+    <div class="check"><div class="top"><span class="name">Forced login pages</span><span class="sev med">medium</span></div><div class="desc">Traffic is held until you sign in on the network's page.</div></div>
+    <div class="check"><div class="top"><span class="name">Intercepted traffic</span><span class="sev crit">critical</span></div><div class="desc">Someone is standing between you and the sites you visit.</div></div>
+    <div class="check"><div class="top"><span class="name">Hidden relays</span><span class="sev med">medium</span></div><div class="desc">An unseen middleman passes unencrypted traffic through.</div></div>
+    <div class="check"><div class="top"><span class="name">Faked name lookups</span><span class="sev high">high</span></div><div class="desc">The network lies about where websites really live.</div></div>
+    <div class="check"><div class="top"><span class="name">Open management</span><span class="sev med">medium</span></div><div class="desc">The router's admin doors are reachable by anyone nearby.</div></div>
+    <div class="check"><div class="top"><span class="name">Impersonated gateway</span><span class="sev high">high</span></div><div class="desc">The router's identity does not match what the network claims.</div></div>
+    <div class="check"><div class="top"><span class="name">Traceable device</span><span class="sev low">low</span></div><div class="desc">Your device broadcasts a permanent, trackable identifier.</div></div>
+    <div class="check"><div class="top"><span class="name">Twin hotspots</span><span class="sev high">high</span></div><div class="desc">Another access point borrows the same network name.</div></div>
+    <div class="check"><div class="top"><span class="name">Working connection</span><span class="sev low">info</span></div><div class="desc">Confirms the internet is actually reachable.</div></div>
   </div>
-  <div class="probes">Checks degrade to SKIP when a probe cannot run, so a blocked network never produces a false alarm.</div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>06 / 13</span></div>
+  <div class="note">When a check cannot run, it is <b>skipped rather than guessed</b>, so a blocked network never produces a false alarm.</div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>06 / 12</span></div>
 </section>
 
 <!-- 7 · SCORING -->
 <section class="slide">
   <div class="head">
     <div class="kicker">Verdict &amp; scoring</div>
-    <h2>From ten results to <em>one decision</em></h2>
+    <h2>From ten answers to <em>one decision</em></h2>
   </div>
-  <div>
-    <div class="bar"><div class="tick" style="left:45%"></div><div class="tick" style="left:80%"></div></div>
-    <div class="barlbl"><span>0 · unsafe</span><span>45 · caution</span><span>80 · safe</span><span>100</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start">
+    <div>
+      <div class="bar"><div class="tick" style="left:45%"></div><div class="tick" style="left:80%"></div></div>
+      <div class="barlbl"><span>0 · unsafe</span><span>45 · caution</span><span>80 · safe</span><span>100</span></div>
+      <ul class="list" style="margin-top:36px">
+        <li><b>Serious means serious.</b> Every failure subtracts from 100 by how dangerous it is; warnings cost less.</li>
+        <li><b>No averaging away.</b> One critical finding holds the verdict at unsafe.</li>
+        <li><b>Reasons and action.</b> A plain verdict, the problems behind it, and one recommended action.</li>
+      </ul>
+    </div>
+    <figure>
+      <img class="shot" src="../screenshots/unsafe net.png" alt="NetGuard unsafe verdict notification">
+      <figcaption>A real verdict on a hostile network.</figcaption>
+    </figure>
   </div>
-  <div class="triple">
-    <div class="item"><div class="num">WEIGHTED</div><h3>Severity penalties</h3><p>Failures subtract from 100 by severity: critical 45, high 25, medium 14, low 7. Warnings cost a fraction.</p></div>
-    <div class="item"><div class="num">CAPPED</div><h3>Can't average out</h3><p>Any critical failure caps the score at 25. Any high failure caps it at 55. Severe findings stay severe.</p></div>
-    <div class="item"><div class="num">EXPLAINED</div><h3>Reasons and action</h3><p>A plain verdict, the ordered problems, and one recommended action per finding.</p></div>
-  </div>
-  <div class="mono-line">example: open SSID + TLS interception + DNS hijack + evil twin → score 0/100 → <b style="color:var(--unsafe)">UNSAFE</b></div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>07 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>07 / 12</span></div>
 </section>
 
-<!-- 8 · UX -->
+<!-- 8 · WHAT YOU SEE -->
 <section class="slide">
   <div class="head">
-    <div class="kicker">User experience</div>
-    <h2>Two notifications, <em>one decision</em></h2>
+    <div class="kicker">What you actually see</div>
+    <h2>Three seconds after joining, <em>you know</em></h2>
   </div>
-  <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:start">
-    <div style="display:grid;gap:18px">
-      <div class="notif bad">
-        <div class="app">NetGuard · now</div>
-        <div class="ti">UNSAFE — GrandHotel_Guest</div>
-        <div class="bo">score 0/100 · 4 failed, 2 warnings
-TLS intercepted (untrusted certificate)
-DNS answers rewritten
-Advice: leave this network, do not enter credentials.</div>
+  <div class="board">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start">
+      <div class="frame">
+        <div class="step">1 · You connect</div>
+        <div class="card">
+          <div class="big">HackYeah2026</div>
+          <div class="sub">Wi-Fi connected · network changed</div>
+        </div>
       </div>
-      <div class="notif ok">
-        <div class="app">NetGuard · now</div>
-        <div class="ti">SAFE — HomeWiFi-5G</div>
-        <div class="bo">score 100/100 · all posture checks passed.</div>
+      <div class="frame">
+        <div class="step">2 · NetGuard checks</div>
+        <img class="shot" src="../screenshots/checking net.png" alt="NetGuard checking notification for HackYeah2026">
       </div>
     </div>
-    <ul class="list">
-      <li>A <b>start notification</b> fires the instant the network changes.</li>
-      <li>The <b>verdict notification</b> carries the level, score, top reasons and one action. Unsafe never auto-expires.</li>
-      <li>Everything is also written to a report: <b>text, JSON or shareable HTML</b>.</li>
-    </ul>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center">
+      <div class="frame">
+        <div class="step">3 · You get the verdict</div>
+        <img class="shot" src="../screenshots/safe net.png" alt="NetGuard safe verdict notification for HackYeah2026">
+      </div>
+      <p style="margin:0;color:var(--muted);font-size:17px;line-height:1.6">Safe networks get a quiet green confirmation. <b style="color:var(--text);font-weight:600">An unsafe verdict stays on screen until you dismiss it</b>, and a full report is written for anyone who wants the detail.</p>
+    </div>
   </div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>08 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>08 / 12</span></div>
 </section>
 
 <!-- 9 · DEMO -->
 <section class="slide">
   <div class="head">
     <div class="kicker">Demonstration</div>
-    <h2>Reproducible scenarios, <em>no special hardware</em></h2>
+    <h2>Six networks, <em>six verdicts</em></h2>
   </div>
   <table>
-    <tr><th>Scenario</th><th>Story</th><th>Key findings</th><th style="text-align:end">Verdict</th></tr>
-    <tr><td>home-safe</td><td>WPA3 home network</td><td>All checks pass</td><td style="text-align:end"><span class="v safe">SAFE</span></td></tr>
-    <tr><td>wired-office</td><td>Wired office link</td><td>Wi-Fi checks skipped by design</td><td style="text-align:end"><span class="v safe">SAFE</span></td></tr>
-    <tr><td>cafe-open</td><td>Open hotspot + portal</td><td>Open link, captive portal, exposed MAC</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
-    <tr><td>airport-captive</td><td>Airport Wi-Fi</td><td>Open link, portal, UPnP exposed</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
-    <tr><td>corp-interception</td><td>Managed corporate net</td><td>TLS inspection by a trusted private CA</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
-    <tr><td>hotel-mitm</td><td>Compromised hotel net</td><td>Evil twin, DNS hijack, TLS interception</td><td style="text-align:end"><span class="v unsafe">UNSAFE</span></td></tr>
+    <tr><th>Scenario</th><th>The situation</th><th>What NetGuard finds</th><th style="text-align:end">Verdict</th></tr>
+    <tr><td>home-safe</td><td>A well-protected home network</td><td>Everything passes</td><td style="text-align:end"><span class="v safe">SAFE</span></td></tr>
+    <tr><td>wired-office</td><td>An office cable connection</td><td>Wireless checks not applicable</td><td style="text-align:end"><span class="v safe">SAFE</span></td></tr>
+    <tr><td>cafe-open</td><td>An open café hotspot</td><td>No encryption, forced login page</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
+    <tr><td>airport-captive</td><td>Airport Wi-Fi</td><td>No encryption, forced login, open router admin</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
+    <tr><td>corp-interception</td><td>A managed company network</td><td>The company can read encrypted traffic</td><td style="text-align:end"><span class="v caution">CAUTION</span></td></tr>
+    <tr><td>hotel-mitm</td><td>A compromised hotel network</td><td>Fake hotspot, faked lookups, intercepted traffic</td><td style="text-align:end"><span class="v unsafe">UNSAFE</span></td></tr>
   </table>
-  <div class="mono-line">netguard demo --list &nbsp;&nbsp;·&nbsp;&nbsp; netguard demo hotel-mitm --save-html report.html</div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>09 / 13</span></div>
+  <div class="note">The simulator swaps only the data: <b>the same checks, scoring and notifications</b> run exactly as they do live, so the whole flow can be shown on any machine.</div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>09 / 12</span></div>
 </section>
 
 <!-- 10 · DEPLOY -->
@@ -302,36 +321,19 @@ Advice: leave this network, do not enter credentials.</div>
   </div>
   <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start">
     <ul class="list">
-      <li><b>Zero Python dependencies.</b> Standard library plus tools a Linux desktop already has.</li>
-      <li><b>One-command user install.</b> Runs as a systemd user service, no root, enabled at login.</li>
-      <li><b>Event-driven and quiet.</b> Works only when the network changes; unprobed checks are skipped, never guessed.</li>
+      <li><b>Nothing to install.</b> Uses what your operating system already has, and nothing else.</li>
+      <li><b>Runs quietly in the background.</b> Starts with your session, no administrator rights.</li>
+      <li><b>Only speaks up when it matters.</b> It works when the network changes, and skips what it cannot see rather than guessing.</li>
     </ul>
-    <div class="stats" style="grid-template-columns:1fr;gap:0">
-      <div class="stat" style="padding:16px 0"><div class="n" style="font-size:34px">no capture</div><div class="l">No traffic is captured or stored; only link metadata, locally.</div></div>
-      <div class="stat" style="padding:16px 0"><div class="n" style="font-size:34px">no cloud</div><div class="l">Nothing leaves the machine. Auditable in under 3,300 lines.</div></div>
+    <div class="factstack">
+      <div class="fact"><div class="n">No capture</div><div class="l">Nothing about your traffic is recorded or stored.</div></div>
+      <div class="fact"><div class="n">No cloud</div><div class="l">Nothing leaves the machine, and every line is auditable.</div></div>
     </div>
   </div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>10 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>10 / 12</span></div>
 </section>
 
-<!-- 11 · CRITERIA -->
-<section class="slide">
-  <div class="head">
-    <div class="kicker">Alignment</div>
-    <h2>How NetGuard meets <em>the brief</em></h2>
-  </div>
-  <table>
-    <tr><th>Criterion</th><th>Weight</th><th>How it is delivered</th></tr>
-    <tr><td style="font-family:var(--sans);font-size:16px;font-weight:600">Idea &amp; innovation</td><td style="font:600 14px var(--mono)">30%</td><td>Posture checks triggered by the network change itself, not a schedule.</td></tr>
-    <tr><td style="font-family:var(--sans);font-size:16px;font-weight:600">Relation to category</td><td style="font:600 14px var(--mono)">20%</td><td>Earlier detection of MITM, DNS and evil-twin attacks; better decisions under pressure.</td></tr>
-    <tr><td style="font-family:var(--sans);font-size:16px;font-weight:600">Practical applicability</td><td style="font:600 14px var(--mono)">20%</td><td>Zero-dependency, user-level install, real checks against the live network.</td></tr>
-    <tr><td style="font-family:var(--sans);font-size:16px;font-weight:600">Design</td><td style="font:600 14px var(--mono)">20%</td><td>Plain-language verdicts, colour-coded notifications, shareable HTML report.</td></tr>
-    <tr><td style="font-family:var(--sans);font-size:16px;font-weight:600">Completeness &amp; value</td><td style="font:600 14px var(--mono)">10%</td><td>Working tool, tests, simulation, documentation and service.</td></tr>
-  </table>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>11 / 13</span></div>
-</section>
-
-<!-- 12 · LIMITS -->
+<!-- 11 · HONESTY -->
 <section class="slide">
   <div class="head">
     <div class="kicker">Honesty &amp; roadmap</div>
@@ -341,32 +343,31 @@ Advice: leave this network, do not enter credentials.</div>
     <div>
       <div class="colhead">Known limitations</div>
       <ul class="list">
-        <li>Evil-twin detection is <b>heuristic</b>; a perfect clone needs beacon fingerprinting.</li>
-        <li>TLS checks trust the system CA store, so an admin-installed proxy CA is a warning.</li>
-        <li>Checks reflect the moment of connection.</li>
+        <li>Spotting a <b>cloned hotspot</b> is the hardest part; it needs deeper wireless fingerprinting.</li>
+        <li>A company that installed its own security certificate on your laptop is reported as a warning.</li>
       </ul>
     </div>
     <div>
       <div class="colhead">Roadmap</div>
       <ul class="list">
-        <li>Passive <b>802.11 beacon and RTT fingerprinting</b> for stronger evil-twin detection.</li>
-        <li>DNS-over-TLS enforcement and per-process connection attribution.</li>
-        <li>Tray indicator and a <b>fleet agent</b> for small organizations.</li>
+        <li>Deeper wireless fingerprinting to <b>catch cloned hotspots</b>.</li>
+        <li>Stronger protection for name lookups, and per-app insight.</li>
+        <li>A small menu-bar app, and a fleet mode for teams.</li>
       </ul>
     </div>
   </div>
-  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>12 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · security posture on every network change</span><span>11 / 12</span></div>
 </section>
 
-<!-- 13 · CLOSE -->
+<!-- 12 · CLOSE -->
 <section class="slide">
-  <div style="max-width:1040px">
+  <div style="max-width:1000px">
     <div class="kicker">Defence · Security &amp; resilience</div>
     <h1 style="font-size:66px">Make the safe choice<br><em>automatic.</em></h1>
     <p class="lead">NetGuard turns the instant of a network change into an automatic security posture check, so people, not just enterprises, can tell when public Wi-Fi is not safe to use.</p>
-    <div class="mono-line">netguard watch &nbsp;·&nbsp; python3 -m netguard demo --list &nbsp;·&nbsp; ./scripts/install.sh</div>
+    <div class="vstrip"><i class="a"></i><i class="b"></i><i class="c"></i></div>
   </div>
-  <div class="foot"><span><b>NetGuard</b> · MIT license</span><span>13 / 13</span></div>
+  <div class="foot"><span><b>NetGuard</b> · MIT license</span><span>12 / 12</span></div>
 </section>
 
 </body>

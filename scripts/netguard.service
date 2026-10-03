@@ -1,0 +1,19 @@
+[Unit]
+Description=NetGuard — network-change security posture monitor
+Documentation=https://example.invalid/netguard
+# Start alongside the graphical session so desktop notifications work.
+After=graphical-session.target
+PartOf=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+# `netguard watch` streams NetworkManager events and checks every new network.
+ExecStart=%h/.local/bin/netguard watch
+Restart=on-failure
+RestartSec=5
+# The user manager already provides DBUS_SESSION_BUS_ADDRESS, which
+# notify-send needs to reach the desktop notification daemon.
+
+[Install]
+WantedBy=graphical-session.target

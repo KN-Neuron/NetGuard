@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>NetGuard report — </title>
+<style>
+  :root { --bg:#0b1020; --panel:#151b30; --text:#e8ecf5; --muted:#9aa4bf;
+           --safe:#2ecc71; --caution:#f4b400; --unsafe:#ff4d5e; --info:#5aa9ff; --skip:#6b7392; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+          font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:920px; margin:0 auto; padding:32px 20px 64px; }
+  header { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; }
+  h1 { margin:0 0 4px; font-size:26px; }
+  .sub { color:var(--muted); font-size:14px; }
+  .score { text-align:center; min-width:170px; }
+  .score .num { font-size:44px; font-weight:700; }
+  .score .lvl { font-weight:700; letter-spacing:1px; }
+  .safe .num,.lvl.safe { color:var(--safe); } .caution .num,.lvl.caution { color:var(--caution); }
+  .unsafe .num,.lvl.unsafe { color:var(--unsafe); } .unknown .num,.lvl.unknown { color:var(--skip); }
+  .headline { margin:18px 0 6px; font-size:18px; }
+  .sim { background:#3a2a00; color:#ffce54; border:1px solid #5c4400; padding:8px 12px;
+          border-radius:8px; font-size:13px; margin:16px 0; }
+  .cards { display:grid; gap:12px; margin-top:20px; }
+  .card { background:var(--panel); border-radius:12px; padding:14px 16px;
+           border-left:4px solid var(--skip); }
+  .card.pass { border-left-color:var(--safe); }
+  .card.info { border-left-color:var(--info); }
+  .card.warn { border-left-color:var(--caution); }
+  .card.fail { border-left-color:var(--unsafe); }
+  .card-head { display:flex; align-items:center; gap:10px; }
+  .card-title { font-weight:600; }
+  .summary { margin-top:6px; }
+  .detail { color:var(--muted); font-size:13px; margin-top:4px; }
+  .fix { color:var(--caution); font-size:13px; margin-top:6px; }
+  .meta { color:#5b6482; font-size:11px; margin-top:8px; text-transform:uppercase; letter-spacing:.5px; }
+  .pill { font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; color:#0b1020; }
+  .pill.pass { background:var(--safe); } .pill.info { background:var(--info); }
+  .pill.warn { background:var(--caution); } .pill.fail { background:var(--unsafe); color:#fff; }
+  .pill.skip { background:var(--skip); color:#fff; }
+  footer { color:#5b6482; font-size:12px; margin-top:28px; }
+</style></head>
+<body><div class="wrap">
+  <header>
+    <div>
+      <h1>Network</h1>
+      <div class="sub">wlan0 · wifi<br>Gateway 172.16.9.1 ·
+      DNS 172.16.9.1</div>
+    </div>
+    <div class="score caution">
+      <div class="num">53</div>
+      <div class="lvl caution">CAUTION</div>
+      <div class="sub">posture score /100</div>
+    </div>
+  </header>
+  <div class="sim">SIMULATED SCENARIO — demonstration data, no live traffic</div>
+  <div class="headline">Airport_WiFi is usable but has risks</div>
+  <div class="cards"><div class="card fail"><div class="card-head"><span class="pill fail">FAIL</span><span class="card-title">Wi-Fi link encryption</span></div><div class="summary">Open network — wireless traffic is not encrypted</div><div class="detail">Anyone nearby can passively capture this network&#x27;s traffic.</div><div class="fix">↳ Avoid logins and sensitive data, or route traffic through a VPN/phone hotspot.</div><div class="meta">severity: high</div></div><div class="card pass"><div class="card-head"><span class="pill pass">PASS</span><span class="card-title">TLS interception (MITM)</span></div><div class="summary">TLS to well-known hosts is end-to-end and publicly trusted</div><div class="meta">severity: critical</div></div><div class="card pass"><div class="card-head"><span class="pill pass">PASS</span><span class="card-title">DNS integrity</span></div><div class="summary">DNS answers match a trusted resolver (3 domains)</div><div class="meta">severity: high</div></div><div class="card pass"><div class="card-head"><span class="pill pass">PASS</span><span class="card-title">Gateway identity (ARP)</span></div><div class="summary">Gateway MAC is consistent and unique</div><div class="meta">severity: high</div></div><div class="card pass"><div class="card-head"><span class="pill pass">PASS</span><span class="card-title">Evil-twin / duplicate SSID</span></div><div class="summary">No duplicate SSID detected for &#x27;Airport_WiFi&#x27;</div><div class="meta">severity: high</div></div><div class="card warn"><div class="card-head"><span class="pill warn">WARN</span><span class="card-title">Captive portal</span></div><div class="summary">A captive portal is intercepting traffic</div><div class="detail">http://connectivity-check.ubuntu.com/ returned status 302 redirecting to http://wifi.airport.example/login.</div><div class="fix">↳ Portal login pages can be spoofed. Avoid sensitive accounts and prefer a VPN or phone hotspot for anything important.</div><div class="meta">severity: medium</div></div><div class="card warn"><div class="card-head"><span class="pill warn">WARN</span><span class="card-title">Transparent HTTP proxy</span></div><div class="summary">The network is transparently proxying HTTP traffic</div><div class="detail">Response headers or a redirect reveal an intermediary proxy.</div><div class="fix">↳ Prefer HTTPS; a proxy can inspect or modify unencrypted traffic.</div><div class="meta">severity: medium</div></div><div class="card warn"><div class="card-head"><span class="pill warn">WARN</span><span class="card-title">Gateway exposure</span></div><div class="summary">UPnP/SSDP is responding on the gateway</div><div class="fix">↳ UPnP can silently open firewall ports; disable it if not needed.</div><div class="meta">severity: medium</div></div><div class="card warn"><div class="card-head"><span class="pill warn">WARN</span><span class="card-title">MAC address privacy</span></div><div class="summary">Wi-Fi MAC address is not randomised</div><div class="detail">Your real hardware address is broadcast, allowing tracking across networks.</div><div class="fix">↳ Enable MAC randomisation in NetworkManager for public networks.</div><div class="meta">severity: low</div></div><div class="card pass"><div class="card-head"><span class="pill pass">PASS</span><span class="card-title">Internet reachability</span></div><div class="summary">Internet egress is available</div><div class="meta">severity: info</div></div></div>
+  <footer>Generated by NetGuard 2026-10-03T23:29:33+02:00 ·
+  10 checks · tool: netguard</footer>
+</div></body></html>

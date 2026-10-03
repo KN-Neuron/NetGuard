@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netguard"
+version = "1.0.0"
+description = "Network-change security posture monitor for Linux desktops"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "NetGuard team" }]
+keywords = ["security", "wifi", "posture", "network", "mitm", "defence"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Security",
+]
+# The core tool is standard-library only, so it runs on a stock Linux desktop
+# with no installed Python dependencies. `requests` (optional) enables the
+# DNS-over-HTTPS integrity comparison; without it that check is skipped.
+dependencies = []
+
+[project.optional-dependencies]
+doh = ["requests>=2.25"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+netguard = "netguard.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["netguard*"]

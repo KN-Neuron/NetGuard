@@ -1,6 +1,6 @@
 # NetGuard
 
-**A network-change security posture monitor for Linux desktops.**
+**A network-change security posture monitor for desktops.**
 
 NetGuard watches for network changes (joining a Wi-Fi network, a new gateway/DNS,
 a VPN coming up) and, every time the network changes, runs a battery of
@@ -10,8 +10,7 @@ through the desktop notification daemon, so people on public Wi-Fi learn
 *immediately* whether the network can be trusted with sensitive work.
 
 It is intentionally **dependency-free**: the tool uses only the Python standard
-library plus utilities already present on a normal Linux desktop
-(`nmcli`, `ip`, `iw`, `resolvectl`, `openssl`, `notify-send`).
+library plus utilities already present on a normal desktop.
 
 ---
 
